@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rúbrica de evaluación — Informe de práctica Laboral</title>
+<style>
+:root{--bg:#171b24;--p:#1f2531;--p2:#262d3b;--bd:#364054;--tx:#e8ecf3;--tx2:#a4aec0;--ac:#6ea8fe;--ok:#4ade80;--no:#f87171;--wa:#fbbf24;color-scheme:dark}
+[data-theme=light]{--bg:#eef1f6;--p:#fff;--p2:#f3f5f9;--bd:#c5cddb;--tx:#18202e;--tx2:#4a5568;--ac:#1d4ed8;--ok:#15803d;--no:#b91c1c;--wa:#92400e;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1500px;margin:0 auto;padding:16px}
+h1{font:600 1.45rem/1.2 Georgia,serif;margin:0 0 4px}h2{font:600 1.1rem Georgia,serif;margin:0 0 10px}h3{font-size:1rem;margin:0}
+.sub{color:var(--tx2);margin:0 0 14px}
+section,.bar{background:var(--p);border:1px solid var(--bd);border-radius:10px;padding:14px;margin-bottom:14px}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:.85rem;color:var(--tx2)}
+input,select,textarea,button{font:inherit;color:var(--tx);background:var(--p2);border:1px solid var(--bd);border-radius:7px;padding:7px 9px}
+textarea{width:100%;min-height:64px;resize:vertical}
+button{cursor:pointer}button:hover{border-color:var(--ac)}
+:focus-visible,.lv:focus-within{outline:3px solid var(--ac);outline-offset:2px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tools .on{background:var(--ac);color:#0b1220;border-color:var(--ac)}
+.danger{border-color:var(--no);color:var(--no)}
+.bar{position:sticky;top:0;z-index:5;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.big{font:700 2.4rem/1 Georgia,serif}.big small{font:400 .8rem system-ui;color:var(--tx2);display:block}
+.chip{display:inline-block;padding:2px 9px;border-radius:99px;border:1px solid var(--bd);font-size:.82rem;background:var(--p2)}
+.chip.ok{border-color:var(--ok);color:var(--ok)}.chip.no{border-color:var(--no);color:var(--no)}.chip.wa{border-color:var(--wa);color:var(--wa)}
+.meter{height:8px;background:var(--p2);border-radius:5px;overflow:hidden;min-width:140px;border:1px solid var(--bd)}.meter i{display:block;height:100%;background:var(--ok)}
+.meter.bad i{background:var(--no)}
+.crit{border:1px solid var(--bd);border-radius:10px;padding:12px;margin-bottom:14px;background:var(--p2)}
+.crit header{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.crit header p{margin:2px 0 0;color:var(--tx2);font-size:.9rem;max-width:80ch}
+.levels{display:grid;gap:8px;grid-template-columns:repeat(5,1fr)}
+.lv{position:relative;display:flex;flex-direction:column;gap:5px;padding:10px;border:2px solid var(--bd);border-radius:9px;background:var(--bg);cursor:pointer}
+.lv.edit{cursor:default}
+.lv input[type=radio]{position:absolute;opacity:0;pointer-events:none}
+.lv .g{font:700 1.25rem Georgia,serif}.lv .d{font-size:.88rem;margin:0}
+.lv .tag{font-size:.78rem}.lv .sel{display:none;font-size:.8rem;font-weight:700}
+.lv.on{border-width:4px;padding:8px}.lv.on .sel{display:block}
+.lv.on::after{content:"✔";position:absolute;top:6px;right:8px;font-weight:700}
+.lv:not(.edit):hover{filter:brightness(1.15)}
+.cm{margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border-bottom:1px solid var(--bd);padding:6px 8px;text-align:left;vertical-align:top}
+.tw{overflow-x:auto}.num{text-align:right;white-space:nowrap}
+.warn{color:var(--wa);font-size:.88rem;margin:4px 0}
+#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:var(--p);border:1px solid var(--ac);padding:9px 16px;border-radius:8px;display:none;z-index:9;max-width:90vw}
+#printArea{display:none}
+@media(max-width:1100px){.levels{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.levels{grid-template-columns:1fr}.big{font-size:1.9rem}main{padding:8px}}
+@media print{
+ body{background:#fff;color:#000;font-size:11pt}main>*:not(#printArea){display:none!important}
+ #printArea{display:block}#printArea table{font-size:9.5pt}#printArea th,#printArea td{border:1px solid #888;color:#000}
+ #printArea h1,#printArea h2{color:#000}tr{break-inside:avoid}.pre{white-space:pre-wrap}
+}
+</style>
+</head>
+<body>
+<main>
+<h1>Rúbrica de evaluación — Informe de práctica profesional</h1>
+<p class="sub">Seleccione un nivel por criterio. La nota final se calcula como promedio ponderado de las notas numéricas.</p>
+
+<div class="tools" role="toolbar" aria-label="Acciones">
+ <button data-a="save">Guardar</button><button data-a="load">Recuperar</button>
+ <button data-a="json">Exportar JSON</button><button data-a="import">Importar JSON</button>
+ <button data-a="csv">Exportar CSV</button><button data-a="print">Imprimir / PDF</button>
+ <button data-a="copy">Copiar resumen</button>
+ <button data-a="edit" id="bEdit" aria-pressed="false">Modo edición de rúbrica</button>
+ <button data-a="theme">Tema claro/oscuro</button>
+ <button data-a="reset" class="danger">Restaurar rúbrica inicial</button>
+ <button data-a="new" class="danger">Nueva evaluación</button>
+ <input type="file" id="file" accept=".json,application/json" hidden>
+</div>
+
+<section aria-labelledby="hA"><h2 id="hA">A. Identificación</h2>
+ <div class="grid">
+  <label class="f">Tipo de práctica o evaluación<input data-b="meta.tipo"></label>
+  <label class="f">Estudiante o grupo<input data-b="meta.nombre"></label>
+  <label class="f">Asignatura<input data-b="meta.asig"></label>
+  <label class="f">Semestre<select data-b="meta.sem"><option>Otoño</option><option>Primavera</option><option>Verano</option></select></label>
+  <label class="f">Año académico<input type="number" data-b="meta.anio" min="1990" max="2100"></label>
+  <label class="f">Nota mínima<input type="number" step="0.1" data-sc="min"></label>
+  <label class="f">Nota máxima<input type="number" step="0.1" data-sc="max"></label>
+  <label class="f">Umbral de aprobación<input type="number" step="0.1" data-sc="pass"></label>
+ </div><div id="scWarn" class="warn" role="alert"></div>
+</section>
+
+<div class="bar" id="summary" aria-live="polite"></div>
+
+<section aria-labelledby="hC"><h2 id="hC">C. Matriz de evaluación</h2>
+ <div id="matrix"></div>
+ <button data-a="add" id="bAdd" hidden>+ Añadir criterio</button>
+</section>
+
+<section aria-labelledby="hD"><h2 id="hD">D. Retroalimentación general</h2>
+ <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">
+  <label class="f">Comentario general del docente<textarea data-b="fb.general"></textarea></label>
+  <label class="f">Fortalezas principales<textarea data-b="fb.fort"></textarea></label>
+  <label class="f">Oportunidades de mejora<textarea data-b="fb.mejora"></textarea></label>
+  <label class="f">Próximos pasos o recomendaciones<textarea data-b="fb.next"></textarea></label>
+ </div>
+</section>
+
+<section aria-labelledby="hE"><h2 id="hE">E. Resumen final</h2><div class="tw" id="final"></div></section>
+<div id="printArea"></div>
+<div id="toast" role="status"></div>
+</main>
+
+<script>
+"use strict";
+/* ===== Datos iniciales (rúbrica original, descriptores íntegros) ===== */
+const LN=["Excelente","Bueno","Suficiente","Insuficiente","Ausente"], LG=[7,5.5,4,3,1];
+const BASE=[
+["Comprensión del contexto profesional","Institución, actores, usuarios, cultura y rol estratégico del diseño.",15,[
+"Analiza críticamente la institución, identifica actores, usuarios, objetivos, cultura organizacional y el rol estratégico del diseño; reconoce tensiones y oportunidades relevantes del contexto.",
+"Describe claramente la institución y el rol del diseño, incorporando elementos de análisis sobre su funcionamiento y contexto.",
+"Describe la institución y las tareas realizadas, con análisis limitado del contexto profesional.",
+"Presenta información parcial, desordenada o superficial sobre la institución y el contexto de práctica.",
+"No describe el contexto profesional ni la institución."]],
+["Desempeño y participación profesional","Participación, autonomía, iniciativa y resolución de problemas reales durante la práctica.",20,[
+"Evidencia participación activa y sostenida, autonomía creciente, iniciativa profesional y capacidad de resolver problemas reales durante la práctica.",
+"Participa activamente y cumple adecuadamente las tareas asignadas, mostrando autonomía en situaciones habituales.",
+"Cumple tareas básicas y participa de manera regular, aunque requiere orientación frecuente.",
+"La participación es irregular, dependiente o con escasa evidencia de contribución profesional.",
+"No hay evidencia de participación en actividades de práctica."]],
+["Integración teoría–práctica","Relación entre la experiencia de práctica y los conceptos y metodologías de la carrera.",20,[
+"Relaciona rigurosamente experiencias de práctica con conceptos, metodologías y aprendizajes de la carrera, justificando decisiones de diseño con fundamentos disciplinares.",
+"Establece relaciones claras entre práctica y formación disciplinar, utilizando conceptos pertinentes.",
+"Menciona contenidos o metodologías de la carrera, pero la integración con la experiencia es parcial.",
+"Las referencias teóricas son superficiales, incorrectas o no se vinculan con la experiencia.",
+"No establece relación entre la práctica y la formación académica."]],
+["Reflexión crítica y aprendizaje profesional","Análisis de aprendizajes, dificultades, decisiones y proyección profesional.",25,[
+"Reflexiona críticamente sobre aprendizajes, dificultades, decisiones, errores y transformaciones personales; identifica competencias desarrolladas y proyecta acciones concretas para su trayectoria profesional.",
+"Analiza aprendizajes relevantes, reconoce fortalezas y debilidades y plantea mejoras posibles.",
+"Describe aprendizajes generales y algunas dificultades, con análisis limitado.",
+"La reflexión se reduce a narrar actividades sin análisis crítico ni identificación de aprendizajes.",
+"No presenta reflexión sobre la experiencia de práctica."]],
+["Ética, responsabilidad y trabajo colaborativo","Conducta ética, responsabilidad profesional, confidencialidad y colaboración.",10,[
+"Analiza situaciones éticas, demuestra responsabilidad profesional, respeto por normas y confidencialidad, y reflexiona sobre el trabajo colaborativo e interdisciplinario.",
+"Evidencia comportamiento responsable y colaborativo y reconoce la importancia de la ética profesional.",
+"Menciona aspectos éticos y de colaboración, aunque sin mayor profundización.",
+"Presenta referencias vagas o poco pertinentes sobre ética o colaboración profesional.",
+"No aborda aspectos éticos ni de trabajo colaborativo."]],
+["Criterio profesional frente a herramientas digitales e IA","Uso crítico de herramientas digitales o IA y distinción entre aporte personal y automatizado.",5,[
+"Explicita críticamente el uso de herramientas digitales o IA, diferencia aportes personales y automatizados y justifica decisiones mediante criterio profesional.",
+"Describe adecuadamente las herramientas utilizadas y reconoce su impacto en el trabajo realizado.",
+"Menciona herramientas digitales o IA utilizadas, con escaso análisis crítico.",
+"La descripción del uso de herramientas es confusa, incompleta o poco pertinente.",
+"No aborda el uso de herramientas digitales o IA."]],
+["Comunicación profesional de la experiencia","Estructura, lenguaje disciplinar, recursos visuales y comunicación oral.",5,[
+"Presenta la experiencia con estructura rigurosa, lenguaje disciplinar preciso, recursos visuales pertinentes y comunicación oral profesional y fluida.",
+"La presentación es clara, organizada y utiliza adecuadamente recursos visuales y lenguaje profesional.",
+"La comunicación es comprensible, aunque presenta problemas menores de organización, precisión o apoyo visual.",
+"La presentación es poco clara, desorganizada o con uso inadecuado del lenguaje y los recursos visuales.",
+"No presenta la experiencia o la comunicación es incomprensible."]]];
+
+let S, nid=0, edit=false;
+const KEY="rubrica_eval_v1";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const f1=n=>n.toFixed(1).replace(".",","), f2=n=>n.toFixed(2).replace(".",",");
+const mkCrit=(n,d,w,descs)=>({id:++nid,name:n,desc:d,w:w,sel:null,comment:"",
+  levels:LN.map((x,i)=>({name:x,desc:descs?descs[i]:"",grade:LG[i]}))});
+const emptyMeta=()=>({tipo:"Práctica profesional",nombre:"",asig:"",sem:"Otoño",anio:new Date().getFullYear()});
+function fresh(keepRubric){
+  const old=S;
+  S={meta:emptyMeta(),scale:{min:1,max:7,pass:4},fb:{general:"",fort:"",mejora:"",next:""},
+     criteria:(keepRubric&&old)?old.criteria.map(c=>({...c,sel:null,comment:""})):BASE.map(b=>mkCrit(...b))};
+  if(keepRubric&&old)S.scale={...old.scale};
+}
+function toast(m){const t=$("#toast");t.textContent=m;t.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display="none",2800)}
+const get=(o,p)=>p.split(".").reduce((a,k)=>a[k],o);
+const set=(o,p,v)=>{const k=p.split(".");const l=k.pop();get(o,k.join(".")||"")[l]=v};
+function setPath(p,v){const k=p.split(".");let o=S;for(let i=0;i<k.length-1;i++)o=o[k[i]];o[k[k.length-1]]=v}
+function getPath(p){return p.split(".").reduce((a,k)=>a[k],S)}
+
+/* ===== Color por nota: verde >= umbral, rojo < umbral; intensidad según distancia ===== */
+function colors(g){
+  const {min,max,pass}=S.scale; let t;
+  if(g>=pass){t=max>pass?Math.min(1,(g-pass)/(max-pass)):1;
+    return{bg:`hsl(145 ${30+t*30}% ${15+t*9}%)`,bd:`hsl(145 ${50+t*20}% ${35+t*15}%)`,pass:true}}
+  t=pass>min?Math.min(1,(pass-g)/(pass-min)):1;
+  return{bg:`hsl(5 ${30+t*35}% ${16+t*8}%)`,bd:`hsl(5 ${55+t*20}% ${42+t*10}%)`,pass:false}
+}
+
+/* ===== Cálculo con enteros (milésimas de nota × centésimas de %) ===== */
+function calc(){
+  let sum=0,ev=0,wEv=0,wTot=0;
+  const rows=S.criteria.map(c=>{
+    const w=Math.round(c.w*100);wTot+=w;let lv=null,ct=null;
+    if(c.sel!=null&&c.levels[c.sel]){lv=c.levels[c.sel];ct=Math.round(lv.grade*1000)*w;sum+=ct;ev++;wEv+=w}
+    return{c,lv,w:c.w,contrib:ct==null?null:ct/1e7}});
+  const n=S.criteria.length, complete=n>0&&ev===n, wok=wTot===10000;
+  let final=null;
+  if(ev&&complete)final=sum/1e7; else if(ev&&wEv>0)final=sum/(wEv*1000);
+  return{rows,ev,n,complete,wok,wTot:wTot/100,final,provisional:!complete,
+    passed:final!=null&&final>=S.scale.pass-1e-9}
+}
+
+/* ===== Renderizado ===== */
+function renderMatrix(){
+  $("#matrix").innerHTML=S.criteria.map((c,i)=>{
+    const head=edit
+      ?`<div style="flex:1;min-width:240px"><input data-k="name" data-c="${i}" value="${esc(c.name)}" aria-label="Nombre del criterio ${i+1}" style="width:100%;font-weight:600"><textarea data-k="cdesc" data-c="${i}" aria-label="Descripción del criterio" style="min-height:44px;margin-top:5px">${esc(c.desc)}</textarea></div>`
+      :`<div><h3>${i+1}. ${esc(c.name)}</h3><p>${esc(c.desc)}</p></div>`;
+    const wt=`<div style="display:flex;gap:6px;align-items:end"><label class="f">Ponderación (%)<input type="number" min="0" max="100" step="0.5" data-k="w" data-c="${i}" value="${c.w}" style="width:90px"></label>`+
+      (edit?`<button class="danger" data-a="del" data-c="${i}">Eliminar</button>`:`<button data-a="clr" data-c="${i}">Limpiar selección</button>`)+`</div>`;
+    const lv=c.levels.map((l,j)=>edit
+      ?`<div class="lv edit" data-c="${i}" data-l="${j}"><input data-k="lname" data-c="${i}" data-l="${j}" value="${esc(l.name)}" aria-label="Nombre del nivel"><label class="f">Nota<input type="number" step="0.1" data-k="grade" data-c="${i}" data-l="${j}" value="${l.grade}"></label><textarea data-k="ldesc" data-c="${i}" data-l="${j}" aria-label="Descriptor" style="min-height:110px">${esc(l.desc)}</textarea><span class="tag"></span></div>`
+      :`<label class="lv" data-c="${i}" data-l="${j}"><input type="radio" name="c${c.id}" value="${j}" ${c.sel===j?"checked":""}><b>${esc(l.name)}</b><span class="g">${f1(l.grade)}</span><span class="tag"></span><p class="d">${esc(l.desc)}</p><span class="sel">Seleccionado</span></label>`).join("");
+    return`<article class="crit"><header>${head}${wt}</header><div class="levels" role="${edit?"group":"radiogroup"}" aria-label="Niveles del criterio ${esc(c.name)}">${lv}</div><label class="f cm">Comentario específico del criterio<textarea data-k="comment" data-c="${i}">${esc(c.comment)}</textarea></label></article>`}).join("")
+    ||'<p class="sub">No hay criterios. Active el modo edición para añadir uno.</p>';
+  $("#bAdd").hidden=!edit;
+  paint();
+}
+function paint(){ // actualiza colores y estados sin reconstruir el DOM
+  $$(".lv").forEach(el=>{
+    const c=S.criteria[+el.dataset.c],l=c&&c.levels[+el.dataset.l];if(!l)return;
+    const k=colors(l.grade);
+    el.style.background=k.bg;el.style.borderColor=k.bd;
+    el.classList.toggle("on",c.sel===+el.dataset.l);
+    el.querySelector(".tag").textContent=(k.pass?"▲ Aprueba":"▼ No aprueba");
+    const g=el.querySelector("span.g");if(g)g.textContent=f1(l.grade);
+  });
+}
+function renderResults(){
+  const r=calc(),sc=S.scale;
+  const status=r.final==null?'<span class="chip">Sin datos</span>':r.passed?'<span class="chip ok">✔ Aprobado</span>':'<span class="chip no">✖ Reprobado</span>';
+  $("#summary").innerHTML=
+   `<div class="big" title="Nota con precisión interna ${r.final==null?"":f2(r.final)}">${r.final==null?"–":f1(r.final)}<small>${r.provisional?"Nota provisional":"Nota final ponderada"}${r.final!=null?" ("+f2(r.final)+")":""}</small></div>
+    <div>${status}<br><span class="chip ${r.complete?"ok":"wa"}">${r.complete?"Evaluación completa":"Evaluación incompleta"}</span></div>
+    <div>Criterios evaluados<br><b>${r.ev} de ${r.n}</b></div>
+    <div>Ponderación total <b>${r.wTot}%</b> <span class="chip ${r.wok?"ok":"no"}">${r.wok?"✔ Suma 100 %":"✖ Debe sumar 100 %"}</span>
+     <div class="meter ${r.wok?"":"bad"}" role="img" aria-label="Ponderación ${r.wTot}%"><i style="width:${Math.min(100,r.wTot)}%"></i></div></div>`+
+   (r.provisional&&r.ev?`<div class="warn">Resultado provisional: promedio ponderado solo de los criterios evaluados.</div>`:"")+
+   (!r.wok?`<div class="warn">Las ponderaciones no suman 100 %: la nota no está normalizada y puede ser incorrecta.</div>`:"");
+  $("#final").innerHTML=`<table><thead><tr><th>Criterio</th><th>Nivel</th><th class="num">Nota</th><th class="num">Pond.</th><th class="num">Aporte</th></tr></thead><tbody>`+
+   r.rows.map(x=>`<tr><td>${esc(x.c.name)}</td><td>${x.lv?esc(x.lv.name):"—"}</td><td class="num">${x.lv?f1(x.lv.grade):"—"}</td><td class="num">${x.w}%</td><td class="num">${x.contrib==null?"—":f2(x.contrib)}</td></tr>`).join("")+
+   `</tbody><tfoot><tr><th colspan="3">${r.provisional?"Nota provisional":"Nota final"} — ${r.final==null?"sin datos":r.passed?"✔ Aprobado":"✖ Reprobado"} (umbral ${f1(sc.pass)})</th><th class="num">${r.wTot}%</th><th class="num">${r.final==null?"–":f2(r.final)}</th></tr></tfoot></table>`;
+  scaleCheck();
+}
+function scaleCheck(){
+  const {min,max,pass}=S.scale;let m="";
+  const out=S.criteria.some(c=>c.levels.some(l=>l.grade<min||l.grade>max));
+  if(out)m="Hay notas de nivel fuera del rango de la escala.";
+  $("#scWarn").textContent=m;
+}
+function fillForm(){
+  $$("[data-b]").forEach(e=>e.value=getPath(e.dataset.b));
+  $$("[data-sc]").forEach(e=>e.value=S.scale[e.dataset.sc]);
+}
+function renderAll(){fillForm();renderMatrix();renderResults()}
+
+/* ===== Eventos de entrada ===== */
+document.addEventListener("input",e=>{
+  const t=e.target,d=t.dataset;
+  if(d.b){setPath(d.b,d.b==="meta.anio"?+t.value:t.value);return}
+  if(d.k){const c=S.criteria[+d.c];if(!c)return;
+    switch(d.k){
+      case"name":c.name=t.value;renderResults();break;
+      case"cdesc":c.desc=t.value;break;
+      case"comment":c.comment=t.value;break;
+      case"w":c.w=Math.max(0,Math.min(100,parseFloat(t.value)||0));renderResults();break;
+      case"lname":c.levels[+d.l].name=t.value;renderResults();break;
+      case"ldesc":c.levels[+d.l].desc=t.value;break;
+      case"grade":{const v=parseFloat(t.value);if(!isNaN(v)){c.levels[+d.l].grade=v;paint();renderResults()}break}
+    }}
+});
+document.addEventListener("change",e=>{
+  const t=e.target,d=t.dataset;
+  if(d.sc){ // validación de la escala
+    const v=parseFloat(t.value),n={...S.scale};n[d.sc]=v;
+    if(isNaN(v)||n.min>=n.max||n.pass<n.min||n.pass>n.max){toast("Escala inválida: la mínima debe ser menor que la máxima y el umbral estar dentro del rango.");t.value=S.scale[d.sc];return}
+    S.scale=n;paint();renderResults();return}
+  if(d.k==="grade"){const c=S.criteria[+d.c],l=c.levels[+d.l];
+    if(l.grade<S.scale.min||l.grade>S.scale.max){l.grade=Math.max(S.scale.min,Math.min(S.scale.max,l.grade||S.scale.min));t.value=l.grade;toast("Nota ajustada al rango de la escala.");paint();renderResults()}}
+  if(d.k==="w")t.value=S.criteria[+d.c].w;
+  if(t.type==="radio"){const c=S.criteria.find(x=>"c"+x.id===t.name);c.sel=+t.value;paint();renderResults()}
+});
+
+/* ===== Acciones ===== */
+const dirty=()=>S.criteria.some(c=>c.sel!=null||c.comment)||Object.values(S.fb).some(Boolean)||S.meta.nombre;
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button[data-a]");if(!b)return;
+  const a=b.dataset.a,i=+b.dataset.c;
+  ({
+   save,load,json:expJSON,csv:expCSV,print:doPrint,copy:doCopy,
+   import:()=>$("#file").click(),
+   edit:()=>{edit=!edit;b.classList.toggle("on",edit);b.setAttribute("aria-pressed",edit);renderMatrix()},
+   theme:()=>{const h=document.documentElement;h.dataset.theme=h.dataset.theme==="dark"?"light":"dark"},
+   add:()=>{S.criteria.push(mkCrit("Nuevo criterio","",0));renderMatrix();renderResults();toast("Criterio añadido con ponderación 0 %: ajuste las ponderaciones.")},
+   del:()=>{if(confirm(`¿Eliminar el criterio "${S.criteria[i].name}"? Se perderán su selección y comentario.`)){S.criteria.splice(i,1);renderMatrix();renderResults()}},
+   clr:()=>{S.criteria[i].sel=null;$$(`input[name=c${S.criteria[i].id}]`).forEach(r=>r.checked=false);paint();renderResults()},
+   reset:()=>{if(confirm("¿Restaurar la rúbrica inicial? Se perderán las ediciones de criterios, niveles, notas y ponderaciones, y las selecciones y comentarios.")){const m=S.meta,f=S.fb;fresh(false);S.meta=m;S.fb=f;renderAll()}},
+   new:()=>{if(!dirty()||confirm("¿Iniciar una nueva evaluación? Se perderán los datos no guardados (la rúbrica se conserva).")){fresh(true);renderAll();toast("Nueva evaluación iniciada.")}}
+  })[a]();
+});
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));toast("Evaluación guardada en este navegador.")}catch(x){toast("No se pudo guardar: el navegador bloquea el almacenamiento local. Use Exportar JSON.")}}
+function load(){try{const r=localStorage.getItem(KEY);if(!r)return toast("No hay evaluación guardada.");
+  if(dirty()&&!confirm("Se reemplazará la evaluación actual por la guardada. ¿Continuar?"))return;
+  apply(JSON.parse(r));toast("Evaluación recuperada.")}catch(x){toast("No se pudo recuperar: "+x.message)}}
+function apply(o){const v=validate(o);if(v)throw new Error(v);
+  S={meta:{...emptyMeta(),...o.meta},scale:{min:+o.scale.min,max:+o.scale.max,pass:+o.scale.pass},
+     fb:{general:"",fort:"",mejora:"",next:"",...(o.fb||{})},
+     criteria:o.criteria.map(c=>({id:++nid,name:String(c.name),desc:String(c.desc||""),w:+c.w,comment:String(c.comment||""),
+       sel:Number.isInteger(c.sel)&&c.sel>=0&&c.sel<c.levels.length?c.sel:null,
+       levels:c.levels.map(l=>({name:String(l.name),desc:String(l.desc||""),grade:+l.grade}))}))};
+  renderAll()}
+function validate(o){
+  if(!o||typeof o!=="object")return"El archivo no contiene un objeto válido.";
+  const s=o.scale;if(!s||[s.min,s.max,s.pass].some(x=>typeof x!=="number"||!isFinite(x))||s.min>=s.max||s.pass<s.min||s.pass>s.max)return"Escala de calificación inválida.";
+  if(!Array.isArray(o.criteria)||!o.criteria.length)return"Falta la lista de criterios.";
+  for(const [i,c] of o.criteria.entries()){
+    if(!c||typeof c.name!=="string")return`Criterio ${i+1}: falta el nombre.`;
+    if(typeof c.w!=="number"||c.w<0||c.w>100)return`Criterio ${i+1}: ponderación inválida.`;
+    if(!Array.isArray(c.levels)||c.levels.length<2)return`Criterio ${i+1}: niveles inválidos.`;
+    if(c.levels.some(l=>!l||typeof l.name!=="string"||typeof l.grade!=="number"||!isFinite(l.grade)))return`Criterio ${i+1}: nivel con datos inválidos.`}
+  return null}
+$("#file").addEventListener("change",e=>{
+  const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result);const v=validate(o);if(v)throw new Error(v);
+    if(dirty()&&!confirm("Se reemplazará la evaluación actual por la importada. ¿Continuar?"))return;apply(o);toast("Evaluación importada.")}
+    catch(x){toast("Importación rechazada: "+x.message)}};
+  r.readAsText(f);e.target.value=""});
+function download(name,text,type){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+const fname=ext=>"evaluacion_"+(S.meta.nombre||"sin_nombre").trim().replace(/[^\wáéíóúñÁÉÍÓÚÑ-]+/g,"_")+"."+ext;
+function expJSON(){download(fname("json"),JSON.stringify({version:1,exportado:new Date().toISOString(),...S},null,2),"application/json");toast("JSON exportado.")}
+function expCSV(){
+  const r=calc(),q=v=>'"'+String(v??"").replace(/"/g,'""')+'"',n=x=>x==null?"":String(x).replace(".",",");
+  const H=["Tipo","Estudiante/grupo","Asignatura","Semestre","Año","Criterio","Descripción del criterio","Ponderación (%)","Nivel seleccionado","Nota obtenida","Aporte ponderado","Comentario del criterio","Nota final","Estado de la nota","Aprobación","Retroalimentación general","Fortalezas","Mejoras","Próximos pasos"];
+  const m=S.meta,st=r.provisional?"Provisional":"Final",ap=r.final==null?"":r.passed?"Aprobado":"Reprobado";
+  const L=[H.map(q).join(";")].concat(r.rows.map(x=>[m.tipo,m.nombre,m.asig,m.sem,m.anio,x.c.name,x.c.desc,n(x.w),x.lv?x.lv.name:"",n(x.lv&&x.lv.grade),n(x.contrib),x.c.comment,r.final==null?"":n(+r.final.toFixed(2)),st,ap,S.fb.general,S.fb.fort,S.fb.mejora,S.fb.next].map(q).join(";")));
+  download(fname("csv"),"\ufeff"+L.join("\r\n"),"text/csv;charset=utf-8");toast("CSV exportado (separador «;», UTF-8).")}
+function summaryText(){
+  const r=calc(),m=S.meta;
+  return`EVALUACIÓN — ${m.tipo}\nEstudiante/grupo: ${m.nombre||"(sin nombre)"}\nAsignatura: ${m.asig}\nPeriodo: ${m.sem} ${m.anio}\nEscala: ${f1(S.scale.min)}–${f1(S.scale.max)}, aprobación ≥ ${f1(S.scale.pass)}\n\n`+
+  r.rows.map((x,i)=>`${i+1}. ${x.c.name} (${x.w}%)\n   Nivel: ${x.lv?x.lv.name+" — nota "+f1(x.lv.grade)+" — aporte "+f2(x.contrib):"sin evaluar"}${x.c.comment?"\n   Comentario: "+x.c.comment:""}`).join("\n")+
+  `\n\n${r.provisional?"NOTA PROVISIONAL":"NOTA FINAL"}: ${r.final==null?"–":f2(r.final)} ${r.final==null?"":r.passed?"(Aprobado)":"(Reprobado)"}\nPonderación total: ${r.wTot}%${r.wok?"":" (¡no suma 100 %!)"}\n\nRetroalimentación general: ${S.fb.general}\nFortalezas: ${S.fb.fort}\nOportunidades de mejora: ${S.fb.mejora}\nPróximos pasos: ${S.fb.next}`}
+function doCopy(){const t=summaryText();
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Resumen copiado."))
+  .catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Resumen copiado.")}catch(x){toast("No se pudo copiar.")}a.remove()})}
+function buildPrint(){
+  const r=calc(),m=S.meta,p=s=>esc(s).replace(/\n/g,"<br>");
+  $("#printArea").innerHTML=`<h1>Evaluación de informe de práctica profesional</h1>
+  <p><b>${esc(m.tipo)}</b> — ${esc(m.nombre)} — ${esc(m.asig)} — ${esc(m.sem)} ${esc(m.anio)}<br>Escala ${f1(S.scale.min)}–${f1(S.scale.max)}; aprobación ≥ ${f1(S.scale.pass)}</p>
+  <table><thead><tr><th>Criterio</th><th>Nivel y descriptor</th><th>Nota</th><th>Pond.</th><th>Aporte</th><th>Comentario</th></tr></thead><tbody>`+
+  r.rows.map(x=>`<tr><td><b>${esc(x.c.name)}</b></td><td>${x.lv?`<b>${esc(x.lv.name)}.</b> ${esc(x.lv.desc)}`:"Sin evaluar"}</td><td>${x.lv?f1(x.lv.grade):"—"}</td><td>${x.w}%</td><td>${x.contrib==null?"—":f2(x.contrib)}</td><td>${p(x.c.comment)}</td></tr>`).join("")+
+  `</tbody></table><h2>${r.provisional?"Nota provisional":"Nota final"}: ${r.final==null?"–":f2(r.final)} ${r.final==null?"":r.passed?"— Aprobado":"— Reprobado"}</h2>
+  <p>Ponderación total: ${r.wTot}%${r.wok?"":" — ATENCIÓN: no suma 100 %"}</p>
+  <h2>Retroalimentación</h2><p><b>Comentario general:</b><br>${p(S.fb.general)}</p><p><b>Fortalezas:</b><br>${p(S.fb.fort)}</p><p><b>Oportunidades de mejora:</b><br>${p(S.fb.mejora)}</p><p><b>Próximos pasos:</b><br>${p(S.fb.next)}</p>`}
+function doPrint(){buildPrint();window.print()}
+window.addEventListener("beforeprint",buildPrint);
+
+/* ===== Inicio ===== */
+fresh(false);renderAll();
+</script>
+</body>
+</html>
