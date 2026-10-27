@@ -1,0 +1,26 @@
+# ============================================================
+# Datos de estudiantes: NO deben subirse a un repositorio público
+# ============================================================
+
+# Carpeta de trabajo para evaluaciones reales
+evaluaciones/
+
+# Exportaciones generadas por la aplicación (nombre: evaluacion_<estudiante>.json / .csv)
+evaluacion_*.json
+evaluacion_*.csv
+
+# Cualquier CSV y cualquier JSON, salvo las rúbricas versionadas
+*.csv
+*.json
+!rubricas/*.json
+
+# ============================================================
+# Archivos del sistema y de editores
+# ============================================================
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*~
+.vscode/
+.idea/
