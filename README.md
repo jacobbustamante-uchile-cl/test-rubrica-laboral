@@ -2,7 +2,7 @@
 
 Aplicación web de un solo archivo (`index.html`) para evaluar y calificar informes de práctica Laboral de estudiantes de Diseño mediante una rúbrica por competencias con siete criterios y cinco niveles de desempeño.
 
-**Uso en línea:** https://TU-USUARIO.github.io/NOMBRE-DEL-REPOSITORIO/
+**Uso en línea:** https://jacobbustamante-uchile-cl.github.io/test-rubrica-laboral/
 
 No requiere instalación, servidor, backend ni conexión a internet una vez cargada. Está hecha con HTML, CSS y JavaScript nativos, sin dependencias externas.
 
