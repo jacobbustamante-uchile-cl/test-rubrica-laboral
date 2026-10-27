@@ -57,7 +57,7 @@ table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border-bottom:1p
 </head>
 <body>
 <main>
-<h1>Rúbrica de evaluación — Informe de práctica profesional</h1>
+<h1>Rúbrica de evaluación — Informe de práctica Laboral</h1>
 <p class="sub">Seleccione un nivel por criterio. La nota final se calcula como promedio ponderado de las notas numéricas.</p>
 
 <div class="tools" role="toolbar" aria-label="Acciones">
@@ -111,17 +111,17 @@ table{width:100%;border-collapse:collapse;font-size:.9rem}th,td{border-bottom:1p
 /* ===== Datos iniciales (rúbrica original, descriptores íntegros) ===== */
 const LN=["Excelente","Bueno","Suficiente","Insuficiente","Ausente"], LG=[7,5.5,4,3,1];
 const BASE=[
-["Comprensión del contexto profesional","Institución, actores, usuarios, cultura y rol estratégico del diseño.",15,[
+["Comprensión del contexto Laboral","Institución, actores, usuarios, cultura y rol estratégico del diseño.",15,[
 "Analiza críticamente la institución, identifica actores, usuarios, objetivos, cultura organizacional y el rol estratégico del diseño; reconoce tensiones y oportunidades relevantes del contexto.",
 "Describe claramente la institución y el rol del diseño, incorporando elementos de análisis sobre su funcionamiento y contexto.",
-"Describe la institución y las tareas realizadas, con análisis limitado del contexto profesional.",
+"Describe la institución y las tareas realizadas, con análisis limitado del contexto Laboral.",
 "Presenta información parcial, desordenada o superficial sobre la institución y el contexto de práctica.",
-"No describe el contexto profesional ni la institución."]],
-["Desempeño y participación profesional","Participación, autonomía, iniciativa y resolución de problemas reales durante la práctica.",20,[
-"Evidencia participación activa y sostenida, autonomía creciente, iniciativa profesional y capacidad de resolver problemas reales durante la práctica.",
+"No describe el contexto Laboral ni la institución."]],
+["Desempeño y participación Laboral","Participación, autonomía, iniciativa y resolución de problemas reales durante la práctica.",20,[
+"Evidencia participación activa y sostenida, autonomía creciente, iniciativa Laboral y capacidad de resolver problemas reales durante la práctica.",
 "Participa activamente y cumple adecuadamente las tareas asignadas, mostrando autonomía en situaciones habituales.",
 "Cumple tareas básicas y participa de manera regular, aunque requiere orientación frecuente.",
-"La participación es irregular, dependiente o con escasa evidencia de contribución profesional.",
+"La participación es irregular, dependiente o con escasa evidencia de contribución Laboral.",
 "No hay evidencia de participación en actividades de práctica."]],
 ["Integración teoría–práctica","Relación entre la experiencia de práctica y los conceptos y metodologías de la carrera.",20,[
 "Relaciona rigurosamente experiencias de práctica con conceptos, metodologías y aprendizajes de la carrera, justificando decisiones de diseño con fundamentos disciplinares.",
@@ -129,27 +129,27 @@ const BASE=[
 "Menciona contenidos o metodologías de la carrera, pero la integración con la experiencia es parcial.",
 "Las referencias teóricas son superficiales, incorrectas o no se vinculan con la experiencia.",
 "No establece relación entre la práctica y la formación académica."]],
-["Reflexión crítica y aprendizaje profesional","Análisis de aprendizajes, dificultades, decisiones y proyección profesional.",25,[
-"Reflexiona críticamente sobre aprendizajes, dificultades, decisiones, errores y transformaciones personales; identifica competencias desarrolladas y proyecta acciones concretas para su trayectoria profesional.",
+["Reflexión crítica y aprendizaje Laboral","Análisis de aprendizajes, dificultades, decisiones y proyección Laboral.",25,[
+"Reflexiona críticamente sobre aprendizajes, dificultades, decisiones, errores y transformaciones personales; identifica competencias desarrolladas y proyecta acciones concretas para su trayectoria Laboral.",
 "Analiza aprendizajes relevantes, reconoce fortalezas y debilidades y plantea mejoras posibles.",
 "Describe aprendizajes generales y algunas dificultades, con análisis limitado.",
 "La reflexión se reduce a narrar actividades sin análisis crítico ni identificación de aprendizajes.",
 "No presenta reflexión sobre la experiencia de práctica."]],
-["Ética, responsabilidad y trabajo colaborativo","Conducta ética, responsabilidad profesional, confidencialidad y colaboración.",10,[
-"Analiza situaciones éticas, demuestra responsabilidad profesional, respeto por normas y confidencialidad, y reflexiona sobre el trabajo colaborativo e interdisciplinario.",
-"Evidencia comportamiento responsable y colaborativo y reconoce la importancia de la ética profesional.",
+["Ética, responsabilidad y trabajo colaborativo","Conducta ética, responsabilidad Laboral, confidencialidad y colaboración.",10,[
+"Analiza situaciones éticas, demuestra responsabilidad Laboral, respeto por normas y confidencialidad, y reflexiona sobre el trabajo colaborativo e interdisciplinario.",
+"Evidencia comportamiento responsable y colaborativo y reconoce la importancia de la ética Laboral.",
 "Menciona aspectos éticos y de colaboración, aunque sin mayor profundización.",
-"Presenta referencias vagas o poco pertinentes sobre ética o colaboración profesional.",
+"Presenta referencias vagas o poco pertinentes sobre ética o colaboración Laboral.",
 "No aborda aspectos éticos ni de trabajo colaborativo."]],
-["Criterio profesional frente a herramientas digitales e IA","Uso crítico de herramientas digitales o IA y distinción entre aporte personal y automatizado.",5,[
-"Explicita críticamente el uso de herramientas digitales o IA, diferencia aportes personales y automatizados y justifica decisiones mediante criterio profesional.",
+["Criterio Laboral frente a herramientas digitales e IA","Uso crítico de herramientas digitales o IA y distinción entre aporte personal y automatizado.",5,[
+"Explicita críticamente el uso de herramientas digitales o IA, diferencia aportes personales y automatizados y justifica decisiones mediante criterio Laboral.",
 "Describe adecuadamente las herramientas utilizadas y reconoce su impacto en el trabajo realizado.",
 "Menciona herramientas digitales o IA utilizadas, con escaso análisis crítico.",
 "La descripción del uso de herramientas es confusa, incompleta o poco pertinente.",
 "No aborda el uso de herramientas digitales o IA."]],
-["Comunicación profesional de la experiencia","Estructura, lenguaje disciplinar, recursos visuales y comunicación oral.",5,[
-"Presenta la experiencia con estructura rigurosa, lenguaje disciplinar preciso, recursos visuales pertinentes y comunicación oral profesional y fluida.",
-"La presentación es clara, organizada y utiliza adecuadamente recursos visuales y lenguaje profesional.",
+["Comunicación Laboral de la experiencia","Estructura, lenguaje disciplinar, recursos visuales y comunicación oral.",5,[
+"Presenta la experiencia con estructura rigurosa, lenguaje disciplinar preciso, recursos visuales pertinentes y comunicación oral Laboral y fluida.",
+"La presentación es clara, organizada y utiliza adecuadamente recursos visuales y lenguaje Laboral.",
 "La comunicación es comprensible, aunque presenta problemas menores de organización, precisión o apoyo visual.",
 "La presentación es poco clara, desorganizada o con uso inadecuado del lenguaje y los recursos visuales.",
 "No presenta la experiencia o la comunicación es incomprensible."]]];
@@ -161,7 +161,7 @@ const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&
 const f1=n=>n.toFixed(1).replace(".",","), f2=n=>n.toFixed(2).replace(".",",");
 const mkCrit=(n,d,w,descs)=>({id:++nid,name:n,desc:d,w:w,sel:null,comment:"",
   levels:LN.map((x,i)=>({name:x,desc:descs?descs[i]:"",grade:LG[i]}))});
-const emptyMeta=()=>({tipo:"Práctica profesional",nombre:"",asig:"",sem:"Otoño",anio:new Date().getFullYear()});
+const emptyMeta=()=>({tipo:"Práctica Laboral",nombre:"",asig:"",sem:"Otoño",anio:new Date().getFullYear()});
 function fresh(keepRubric){
   const old=S;
   S={meta:emptyMeta(),scale:{min:1,max:7,pass:4},fb:{general:"",fort:"",mejora:"",next:""},
@@ -341,7 +341,7 @@ function doCopy(){const t=summaryText();
   .catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy");toast("Resumen copiado.")}catch(x){toast("No se pudo copiar.")}a.remove()})}
 function buildPrint(){
   const r=calc(),m=S.meta,p=s=>esc(s).replace(/\n/g,"<br>");
-  $("#printArea").innerHTML=`<h1>Evaluación de informe de práctica profesional</h1>
+  $("#printArea").innerHTML=`<h1>Evaluación de informe de práctica Laboral</h1>
   <p><b>${esc(m.tipo)}</b> — ${esc(m.nombre)} — ${esc(m.asig)} — ${esc(m.sem)} ${esc(m.anio)}<br>Escala ${f1(S.scale.min)}–${f1(S.scale.max)}; aprobación ≥ ${f1(S.scale.pass)}</p>
   <table><thead><tr><th>Criterio</th><th>Nivel y descriptor</th><th>Nota</th><th>Pond.</th><th>Aporte</th><th>Comentario</th></tr></thead><tbody>`+
   r.rows.map(x=>`<tr><td><b>${esc(x.c.name)}</b></td><td>${x.lv?`<b>${esc(x.lv.name)}.</b> ${esc(x.lv.desc)}`:"Sin evaluar"}</td><td>${x.lv?f1(x.lv.grade):"—"}</td><td>${x.w}%</td><td>${x.contrib==null?"—":f2(x.contrib)}</td><td>${p(x.c.comment)}</td></tr>`).join("")+
